@@ -1,5 +1,7 @@
 from tkinter import *
 import math
+from turtle import color
+
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
@@ -24,10 +26,13 @@ def start_timer():
 
     if reps % 8 == 0:
         count_down(long_break_sec)
+        header_text.config(text="Break", fg=RED)
     elif reps % 2 == 0:
         count_down(short_break_sec)
+        header_text.config(text="Break", fg=PINK)
     else:
         count_down(work_sec)
+        header_text.config(text="Work", fg=GREEN)
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def count_down(count):
     count_min = math.floor(count / 60)
@@ -40,6 +45,12 @@ def count_down(count):
         window.after(1000, count_down, count - 1)
     else:
         start_timer()
+        if reps > 0:
+            check_marks = ""
+            work_sessions = math.floor(reps/2)
+            for time in range(work_sessions):
+                check_marks += "✓"
+            check.config(text=check_marks)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -59,7 +70,7 @@ canvas.grid(column=2, row=2)
 button_start = Button(text="Start", highlightbackground=YELLOW, command=start_timer)
 button_start.grid(column=1, row=3)
 
-check = Label(text=" ✔", fg=GREEN, bg=YELLOW)
+check = Label(fg=GREEN, bg=YELLOW)
 check.grid(column=2, row=4)
 
 button_reset = Button(text="Reset", highlightbackground=YELLOW)
